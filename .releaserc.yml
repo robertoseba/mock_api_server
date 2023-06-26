@@ -1,0 +1,44 @@
+branches:
+  - main
+  - name: develop
+    channel: develop
+    prerelease: dev
+
+tagFormat: '${version}'
+
+preset: conventionalcommits
+
+presetConfig:
+  types:
+    - type: feat
+      section: Features
+    - type: fix
+      section: Bug Fixes
+    - type: build
+      section: Build System
+    - type: refactor
+      section: Code Refactoring
+    - type: chore
+      hidden: true
+    - type: docs
+      hidden: true
+    - type: style
+      hidden: true
+    - type: perf
+      hidden: true
+    - type: test
+      hidden: true
+
+releaseRules:
+  - type: refactor
+    release: patch
+  - type: build
+    release: patch
+
+plugins:
+  - '@semantic-release/commit-analyzer'
+  - '@semantic-release/release-notes-generator'
+  - '@semantic-release/changelog'
+  - - '@semantic-release/git'
+    - message: "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
+  - '@semantic-release/github'
