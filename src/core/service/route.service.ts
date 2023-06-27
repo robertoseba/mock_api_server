@@ -10,15 +10,6 @@ import { CreateRouteDTO } from '../dto/create_route_dto';
 export class RouteService {
   constructor(private readonly routesRepository: RouteRepository) {}
 
-  getRoute(route: string, method: string) {
-    const routeData = this.routesRepository.getRoute(route);
-    if (!routeData) {
-      return null;
-    }
-
-    return routeData.method[method];
-  }
-
   createRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
     if (this.routesRepository.getRoute(route)) {
       throw new ConflictException('Route already exists');
@@ -27,29 +18,36 @@ export class RouteService {
   }
 
   deleteRoute(route: string): boolean {
-    if (!this.routesRepository.getRoute(route)) {
-      throw new NotFoundException('Route not found');
-    }
+    this.checkExists(route);
     return this.routesRepository.deleteRoute(route);
   }
 
   updateRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
-    if (!this.routesRepository.getRoute(route)) {
-      throw new NotFoundException('Route not found');
-    }
+    this.checkExists(route);
     return this.routesRepository.updateRoute(route, createRouteDTO);
   }
 
   processRoute(route: string, method: string) {
-    const routeData = this.getRoute(route, method);
-
-    if (!routeData) {
-      throw new NotFoundException('Route not found');
-    }
+    const routeData = this.getRouteData(route, method);
 
     return {
       responseStatus: routeData.response_status,
       responseData: routeData.response_data,
     };
+  }
+
+  private getRouteData(route: string, method: string) {
+    const routeData = this.routesRepository.getRoute(route);
+    if (!routeData || Object.hasOwn(routeData.method, method)) {
+      throw new NotFoundException('Route not found');
+    }
+
+    return routeData.method[method];
+  }
+
+  private checkExists(route: string): void {
+    if (!this.routesRepository.getRoute(route)) {
+      throw new NotFoundException('Route not found');
+    }
   }
 }

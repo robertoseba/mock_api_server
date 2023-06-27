@@ -3,7 +3,6 @@ import {
   Body,
   Controller,
   Delete,
-  NotFoundException,
   Patch,
   Post,
   Req,
