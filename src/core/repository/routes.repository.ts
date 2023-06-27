@@ -17,7 +17,7 @@ export class RouteRepository {
 
   deleteRoute(route: string): boolean {
     delete this.routes[route];
-    console.log(this.routes);
+
     return true;
   }
 

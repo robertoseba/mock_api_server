@@ -10,7 +10,7 @@ import {
   CreateRouteDTO,
   RouteInfo,
 } from '../dto/create_route_dto';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 @Injectable()
 export class RouteService {
