@@ -8,16 +8,17 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
-import { RouteService } from './route.service';
+import { RouteService } from './service/route.service';
 import { Request } from 'express';
 import { CreateRouteDTO } from './dto/create_route_dto';
 
 @Controller()
-export class AppController {
+export class CoreController {
   constructor(private readonly routeService: RouteService) {}
 
   @Post('/add/*')
   addRoute(@Req() req: Request, @Body() createRouteDto: CreateRouteDTO) {
+    console.log(createRouteDto);
     const route = req.params[0];
     return this.routeService.createRoute(route, createRouteDto);
   }

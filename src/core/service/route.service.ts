@@ -1,15 +1,14 @@
 import {
-  HttpException,
-  HttpStatus,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { RoutesRepositoryService } from './repository/routes.repository';
-import { CreateRouteDTO } from './dto/create_route_dto';
+import { RouteRepository } from '../repository/routes.repository';
+import { CreateRouteDTO } from '../dto/create_route_dto';
 
 @Injectable()
 export class RouteService {
-  constructor(private readonly routesRepository: RoutesRepositoryService) {}
+  constructor(private readonly routesRepository: RouteRepository) {}
 
   getRoute(route: string) {
     return this.routesRepository.getRoute(route);
@@ -17,7 +16,7 @@ export class RouteService {
 
   createRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
     if (this.getRoute(route)) {
-      throw new HttpException('Route already exists', HttpStatus.BAD_REQUEST);
+      throw new ConflictException('Route already exists');
     }
     return this.routesRepository.createRoute(route, createRouteDTO);
   }

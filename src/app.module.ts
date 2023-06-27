@@ -2,10 +2,8 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
-import { AppController } from './app.controller';
-import { RouteService } from './route.service';
 import { HealthController } from './health/health.controller';
-import { RoutesRepositoryService } from './repository/routes.repository';
+import { CoreModule } from './core/core.module';
 
 @Module({
   imports: [
@@ -15,8 +13,8 @@ import { RoutesRepositoryService } from './repository/routes.repository';
     }),
     HttpModule,
     TerminusModule,
+    CoreModule,
   ],
-  controllers: [HealthController, AppController],
-  providers: [RouteService, RoutesRepositoryService],
+  controllers: [HealthController],
 })
 export class AppModule {}

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRouteDTO } from 'src/dto/create_route_dto';
+import { CreateRouteDTO } from 'src/core/dto/create_route_dto';
 
 @Injectable()
-export class RoutesRepositoryService {
+export class RouteRepository {
   private routes: Record<string, CreateRouteDTO> = {};
 
   getRoute(route: string) {
