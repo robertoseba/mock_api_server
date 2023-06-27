@@ -39,4 +39,17 @@ export class RouteService {
     }
     return this.routesRepository.updateRoute(route, createRouteDTO);
   }
+
+  processRoute(route: string, method: string) {
+    const routeData = this.getRoute(route, method);
+
+    if (!routeData) {
+      throw new NotFoundException('Route not found');
+    }
+
+    return {
+      responseStatus: routeData.response_status,
+      responseData: routeData.response_data,
+    };
+  }
 }

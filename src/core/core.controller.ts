@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Req,
+  Res,
 } from '@nestjs/common';
 import { RouteService } from './service/route.service';
 import { Request } from 'express';
@@ -35,11 +36,12 @@ export class CoreController {
   }
 
   @All('/*')
-  mockApi(@Req() req: Request) {
-    const routeResponse = this.routeService.getRoute(req.params[0], req.method);
-    if (!routeResponse) {
-      throw new NotFoundException('Route not found');
-    }
-    return routeResponse;
+  mockApi(@Req() req: Request, @Res() res) {
+    const { responseStatus, responseData } = this.routeService.processRoute(
+      req.params[0],
+      req.method,
+    );
+
+    return res.status(responseStatus).json(responseData);
   }
 }
