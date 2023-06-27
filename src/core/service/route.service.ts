@@ -1,13 +1,17 @@
 import {
   ConflictException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { RouteRepository } from '../repository/routes.repository';
 import { CreateRouteDTO } from '../dto/create_route_dto';
+import axios, { AxiosResponse } from 'axios';
 
 @Injectable()
 export class RouteService {
+  private readonly logger = new Logger(RouteService.name);
+
   constructor(private readonly routesRepository: RouteRepository) {}
 
   createRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
@@ -30,15 +34,36 @@ export class RouteService {
   processRoute(route: string, method: string) {
     const routeData = this.getRouteData(route, method);
 
+    if (routeData.callback) {
+      setTimeout(async () => {
+        this.processCallback(routeData.callback);
+      }, routeData.callback.delay_ms);
+    }
+
     return {
       responseStatus: routeData.response_status,
       responseData: routeData.response_data,
     };
   }
 
+  private async processCallback(callback): Promise<void> {
+    try {
+      const response = await axios({
+        method: callback.method,
+        url: callback.url,
+        data: callback.payload,
+      });
+
+      this.logger.debug(response.data);
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
+
   private getRouteData(route: string, method: string) {
     const routeData = this.routesRepository.getRoute(route);
-    if (!routeData || Object.hasOwn(routeData.method, method)) {
+
+    if (!routeData || !Object.hasOwn(routeData.method, method)) {
       throw new NotFoundException('Route not found');
     }
 

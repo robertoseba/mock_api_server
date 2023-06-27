@@ -14,7 +14,7 @@ import { IsRestMethod } from './custom_validators/method_validator';
 
 class CallBackInfo {
   @IsNotEmpty()
-  @IsUrl()
+  @IsUrl({ protocols: ['http', 'https'] })
   url: string;
 
   @IsNotEmpty()
@@ -24,6 +24,10 @@ class CallBackInfo {
   @IsNotEmpty()
   @IsIn(['POST', 'PATCH', 'PUT', 'DELETE', 'GET'])
   method: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  delay_ms: number;
 }
 
 class RouteInfo {
