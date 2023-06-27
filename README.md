@@ -5,7 +5,7 @@ Servidor para prover endpoints para "mockar" respostas e callbacks dos serviços
 ## Detalhes técnicos:
 
 - Framework: NestJs
-- Database: MongoDB?
+- Database: In-memory (Será implementado DB para persistencia depois)
 - Testing framework: Jest (SWC transpiler)
 
 ## Instalação:
