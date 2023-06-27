@@ -12,7 +12,7 @@ import {
 import { Type } from 'class-transformer';
 import { IsRestMethod } from './custom_validators/method_validator';
 
-class CallBackInfo {
+export class CallBackInfo {
   @IsNotEmpty()
   @IsUrl({ protocols: ['http', 'https'] })
   url: string;
@@ -30,7 +30,7 @@ class CallBackInfo {
   delay_ms: number;
 }
 
-class RouteInfo {
+export class RouteInfo {
   @IsNumber()
   @Min(200)
   @Max(500)

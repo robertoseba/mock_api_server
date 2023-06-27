@@ -5,7 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { RouteRepository } from '../repository/routes.repository';
-import { CreateRouteDTO } from '../dto/create_route_dto';
+import {
+  CallBackInfo,
+  CreateRouteDTO,
+  RouteInfo,
+} from '../dto/create_route_dto';
 import axios, { AxiosResponse } from 'axios';
 
 @Injectable()
@@ -35,7 +39,7 @@ export class RouteService {
     const routeData = this.getRouteData(route, method);
 
     if (routeData.callback) {
-      setTimeout(async () => {
+      setTimeout(() => {
         this.processCallback(routeData.callback);
       }, routeData.callback.delay_ms);
     }
@@ -46,7 +50,7 @@ export class RouteService {
     };
   }
 
-  private async processCallback(callback): Promise<void> {
+  private async processCallback(callback: CallBackInfo): Promise<void> {
     try {
       const response = await axios({
         method: callback.method,
@@ -60,7 +64,7 @@ export class RouteService {
     }
   }
 
-  private getRouteData(route: string, method: string) {
+  private getRouteData(route: string, method: string): RouteInfo {
     const routeData = this.routesRepository.getRoute(route);
 
     if (!routeData || !Object.hasOwn(routeData.method, method)) {
