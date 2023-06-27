@@ -18,7 +18,6 @@ export class CoreController {
 
   @Post('/add/*')
   addRoute(@Req() req: Request, @Body() createRouteDto: CreateRouteDTO) {
-    console.log(createRouteDto);
     const route = req.params[0];
     return this.routeService.createRoute(route, createRouteDto);
   }
@@ -37,7 +36,7 @@ export class CoreController {
 
   @All('/*')
   mockApi(@Req() req: Request) {
-    const routeResponse = this.routeService.getRoute(req.params[0]);
+    const routeResponse = this.routeService.getRoute(req.params[0], req.method);
     if (!routeResponse) {
       throw new NotFoundException('Route not found');
     }

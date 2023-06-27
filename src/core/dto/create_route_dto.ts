@@ -1,13 +1,8 @@
 import {
-  IsEmail,
   IsNotEmpty,
-  Matches,
-  MinLength,
   IsNumber,
-  Length,
   IsOptional,
   ValidateNested,
-  IsJSON,
   IsUrl,
   IsObject,
   Min,
@@ -15,7 +10,7 @@ import {
   IsIn,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IsRestMethod } from './method_validator';
+import { IsRestMethod } from './custom_validators/method_validator';
 
 class CallBackInfo {
   @IsNotEmpty()
@@ -23,7 +18,7 @@ class CallBackInfo {
   url: string;
 
   @IsNotEmpty()
-  @IsJSON()
+  @IsObject()
   payload: Record<string, unknown>;
 
   @IsNotEmpty()
