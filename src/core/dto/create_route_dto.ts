@@ -38,8 +38,7 @@ export class RouteInfo {
   response_status: number;
 
   @IsNotEmpty()
-  @IsObject()
-  response_data: Record<any, unknown>;
+  response_data: Record<any, unknown> | Array<Record<any, unknown>>;
 
   @IsOptional()
   @ValidateNested()
