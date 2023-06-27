@@ -50,6 +50,16 @@ export class RouteService {
     };
   }
 
+  getRoute(route: string): CreateRouteDTO {
+    const routeData = this.routesRepository.getRoute(route);
+
+    if (!routeData) {
+      throw new NotFoundException('Route not found');
+    }
+
+    return routeData;
+  }
+
   private async processCallback(callback: CallBackInfo): Promise<void> {
     try {
       const response = await axios({

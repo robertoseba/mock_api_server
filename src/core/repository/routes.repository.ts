@@ -5,7 +5,11 @@ import { CreateRouteDTO } from 'src/core/dto/create_route_dto';
 export class RouteRepository {
   private routes: Record<string, CreateRouteDTO> = {};
 
-  getRoute(route: string) {
+  getRoute(route: string): CreateRouteDTO | null {
+    if (!Object.hasOwn(this.routes, route)) {
+      return null;
+    }
+
     return this.routes[route];
   }
 
