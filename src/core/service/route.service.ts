@@ -11,7 +11,6 @@ import {
   RouteInfo,
 } from '../dto/create_route_dto';
 import axios from 'axios';
-import { Request } from 'express';
 
 @Injectable()
 export class RouteService {

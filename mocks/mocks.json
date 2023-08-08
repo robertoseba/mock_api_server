@@ -1,0 +1,38 @@
+[
+  {
+    "url": "/hello",
+    "method": {
+      "GET": {
+        "response_status": 200,
+        "response_data": {
+          "response": "world"
+        }
+      },
+      "POST": {
+        "response_status": 200,
+        "response_data": {
+          "response": "<name>"
+        },
+        "callback": {
+          "url": "http://localhost:3000",
+          "payload": {
+            "id": 1
+          },
+          "method": "GET",
+          "delay_ms": 2000
+        }
+      }
+    }
+  },
+  {
+    "url": "enotas/8DF75FF9-720A-457B-82AE-5C7EC42B0900/nfes/",
+    "method": {
+      "POST": {
+        "response_status": 200,
+        "response_data": {
+          "nfeId": "<id>"
+        }
+      }
+    }
+  }
+]

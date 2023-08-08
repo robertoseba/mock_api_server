@@ -1,25 +1,34 @@
-# Financial Mock API Server
+# Mock API Server
 
-Servidor para prover endpoints para "mockar" respostas e callbacks dos serviços usados pelo time financeiro.
+Servidor para prover endpoints para "mockar" respostas e callbacks.
 
 ## Detalhes técnicos:
 
 - Framework: NestJs
-- Database: In-memory (Será implementado DB para persistencia depois)
-- Testing framework: Jest (SWC transpiler)
+- Database: In-memory
+- Testing framework: Jest
 
 ## Instalação:
 
 - Baixe o repositório
 - `docker-compose up`
 
-# Cadastrando um novo endpoint para mock:
+# Pre-cadastrando usando arquivo json
 
-Suponhamos que queira cadastrar o endpoint: `/yapay/boleto`
+Editar o arquivo `./mocks/mocks.json` com as rotas a serem implementadas.
+Seguir o exemplo já presente no arquivo e na documentação abaixo.
 
-- Fazer um POST para: `/config/yapay/boleto` (toda rota após /config/ será gravada como chave do registro)
+# Interagindo pela API:
+
+## Cadastrando um novo endpoint para mock:
+
+Suponhamos que queira criar um mock do endpoint: `/melhorenvio/boleto`
+
+- Fazer um POST para: `/config/melhorenvio/boleto` (toda rota após /config/ será gravada como chave do registro)
 
 - Payload (Especificar os métodos que o endpoint irá aceitar e parametros):
+- Caso queira que a resposta contenha alguma informação vinda do POST, você pode identicar usando `<chave-do-post>`.
+  Ex: No body do POST vc enviou {"id":1} então no corpo abaixo a resposta ficaria:
 
 ```json
 {
@@ -27,12 +36,13 @@ Suponhamos que queira cadastrar o endpoint: `/yapay/boleto`
     "POST": {
       "response_status": 201,
       "response_data": {
+        "externalId": "<id>",
         "message": "Record created successfully"
       }
     },
     "GET": {
       "response_status": 200,
-      "response_data": [{ "paid": true, "code": "xyz" }]
+      "response_data": [{ "paid": true, "code": "0001" }]
     }
   }
 }
@@ -41,23 +51,23 @@ Suponhamos que queira cadastrar o endpoint: `/yapay/boleto`
 ## Verificando informações cadastradas para rota:
 
 - Fazer um GET para a rota cadastrada prefixado com `config`.
-  Exemplo GET->`/config/yapay/boleto`.
+  Exemplo GET->`/config/melhorenvio/boleto`.
 
 ## Acessando o endpoint cadastrado:
 
-- Cadastramos os métodos POST e GET. Então ao acessar o endpoint `http://localhost/yapay/boleto` com GET teremos a resposta cadastrada em `response_data` com o status `response_status`.
+- Cadastramos os métodos POST e GET. Então ao acessar o endpoint `http://localhost/melhorenvio/boleto` com GET teremos a resposta cadastrada em `response_data` com o status `response_status`.
 
 O mesmo é válido para o caso do método POST cadastrado.
 
 ## Atualizando o endpoint cadastrado:
 
 - Fazer um PATCH para a rota cadastrada prefixado com `config`.
-  Exemplo PATCH->`/config/yapay/boleto`. O payload deve seguir o formato usado no cadastro.
+  Exemplo PATCH->`/config/melhorenvio/boleto`. O payload deve seguir o formato usado no cadastro.
 
 ## Deletando uma rota cadastrada:
 
 - Fazer um DELETE para a rota cadastrada prefixado com `config`.
-  Exemplo DELETE->`/config/yapay/boleto`.
+  Exemplo DELETE->`/config/melhorenvio/boleto`.
 
 <br />
 
@@ -77,9 +87,9 @@ Payload:
         "hello": "world"
       },
       "callback": {
-        "url": "http://melhorenvio.com/yapay/callback",
+        "url": "http://melhorenvio.com/boleto/callback",
         "payload": {
-          "boleto_id": "xyz",
+          "boleto_id": "001",
           "status": "paid"
         },
         "method": "GET",
