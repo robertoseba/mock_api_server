@@ -38,6 +38,11 @@ export class RouteService {
   processRoute(route: string, method: string, body: Record<string, any>) {
     const routeData = this.getRouteData(route, method);
 
+    const formatedResponse = this.replacePlaceholdersInResponse(
+      routeData.response_data,
+      body,
+    );
+
     this.logger.debug(`Route requested: ${route}`);
     this.logger.debug(`Triggered response: ${JSON.stringify(routeData)}`);
 
@@ -49,10 +54,7 @@ export class RouteService {
 
     return {
       responseStatus: routeData.response_status,
-      responseData: this.replacePlaceholdersInResponse(
-        routeData.response_data,
-        body,
-      ),
+      responseData: formatedResponse,
     };
   }
 
