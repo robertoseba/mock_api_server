@@ -106,16 +106,19 @@ export class RouteService {
 
   private replacePlaceholdersInResponse(
     routeResponse: Record<any, any>,
-    body: Record<string, any>,
+    postBody: Record<string, any>,
   ) {
-    if (Object.keys(body).length === 0) {
+    if (Object.keys(postBody).length === 0) {
       return routeResponse;
     }
 
     let stringData = JSON.stringify(routeResponse);
 
-    Object.keys(body).forEach((key) => {
-      stringData = stringData.replace(`"<${key}>"`, JSON.stringify(body[key]));
+    Object.keys(postBody).forEach((key) => {
+      stringData = stringData.replace(
+        `"<${key}>"`,
+        JSON.stringify(postBody[key]),
+      );
     });
     return JSON.parse(stringData);
   }
