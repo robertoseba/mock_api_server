@@ -16,6 +16,7 @@ export class RouteRepository implements OnModuleInit {
           encoding: 'utf8',
         }),
       );
+
       routes.forEach((route) => {
         const dto = new CreateRouteDTO();
         dto.method = route.method;
@@ -56,8 +57,6 @@ export class RouteRepository implements OnModuleInit {
   }
 
   updateRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
-    this.routes[route] = createRouteDTO;
-
-    return this.routes[route];
+    return this.createRoute(route, createRouteDTO);
   }
 }
