@@ -11,6 +11,7 @@ import {
   RouteInfo,
 } from '../dto/create_route_dto';
 import axios from 'axios';
+import { Request } from 'express';
 
 @Injectable()
 export class RouteService {
@@ -35,18 +36,24 @@ export class RouteService {
     return this.routesRepository.updateRoute(route, createRouteDTO);
   }
 
-  processRoute(route: string, method: string) {
+  processRoute(route: string, method: string, body: Record<string, any>) {
     const routeData = this.getRouteData(route, method);
+
+    this.logger.debug(`Route requested: ${route}`);
+    this.logger.debug(`Triggered response: ${JSON.stringify(routeData)}`);
 
     if (routeData.callback) {
       setTimeout(() => {
-        this.processCallback(routeData.callback);
+        this.processCallback(route, routeData.callback);
       }, routeData.callback.delay_ms);
     }
 
     return {
       responseStatus: routeData.response_status,
-      responseData: routeData.response_data,
+      responseData: this.replacePlaceholdersInResponse(
+        routeData.response_data,
+        body,
+      ),
     };
   }
 
@@ -60,15 +67,21 @@ export class RouteService {
     return routeData;
   }
 
-  private async processCallback(callback: CallBackInfo): Promise<void> {
+  private async processCallback(
+    route: string,
+    callback: CallBackInfo,
+  ): Promise<void> {
     try {
       const response = await axios({
         method: callback.method,
         url: callback.url,
         data: callback.payload,
+        responseType: 'json',
       });
-
-      this.logger.debug(response.data);
+      this.logger.debug(`Processing calllback from route: ${route}`);
+      this.logger.debug(`${callback.method} -> ${callback.url}`);
+      this.logger.debug(`Response status: ${response.status}`);
+      this.logger.debug(JSON.stringify(response.data));
     } catch (err) {
       this.logger.error(err);
     }
@@ -88,5 +101,21 @@ export class RouteService {
     if (!this.routesRepository.getRoute(route)) {
       throw new NotFoundException('Route not found');
     }
+  }
+
+  private replacePlaceholdersInResponse(
+    routeResponse: Record<any, any>,
+    body: Record<string, any>,
+  ) {
+    if (Object.keys(body).length === 0) {
+      return routeResponse;
+    }
+
+    let stringData = JSON.stringify(routeResponse);
+
+    Object.keys(body).forEach((key) => {
+      stringData = stringData.replace(`"<${key}>"`, JSON.stringify(body[key]));
+    });
+    return JSON.parse(stringData);
   }
 }

@@ -1,5 +1,8 @@
 version: '3'
 
+env_file:
+  - ./config/development.env
+
 services:
   server:
     build:
@@ -8,4 +11,4 @@ services:
     volumes:
       - .:/usr/src/app
     ports:
-      - 3000:3000
+      - ${PORT}:${PORT}

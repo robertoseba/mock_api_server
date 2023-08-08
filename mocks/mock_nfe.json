@@ -1,0 +1,22 @@
+{
+  "method": {
+    "POST": {
+      "response_status": 200,
+      "response_data": {
+        "nfeId": "<id>"
+      },
+      "callback": {
+        "url": "https://swapi.dev/api/people/1",
+        "payload": {},
+        "method": "GET",
+        "delay_ms": 2000
+      }
+    },
+    "DELETE": {
+      "response_status": 200,
+      "response_data": {
+        "hello": "world"
+      }
+    }
+  }
+}

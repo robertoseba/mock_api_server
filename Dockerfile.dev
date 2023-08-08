@@ -1,4 +1,4 @@
-FROM node:17.3-bullseye-slim
+FROM node:alpine3.18 AS build
 
 WORKDIR /usr/src/app
 ENV NODE_ENV=development

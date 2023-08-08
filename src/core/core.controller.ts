@@ -11,6 +11,7 @@ export class CoreController {
     const { responseStatus, responseData } = this.routeService.processRoute(
       req.params[0],
       req.method,
+      req.body,
     );
 
     return res.status(responseStatus).json(responseData);
