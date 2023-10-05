@@ -1,4 +1,5 @@
 {
+  "name": "invoices-emitter",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -20,6 +21,7 @@
     "test:e2e:cov": "NODE_ENV=test jest --config ./test/jest-e2e.json --coverage"
   },
   "dependencies": {
+    "@melhorenvio/datadog-ts": "github:melhorenvio/datadog-ts",
     "@nestjs/axios": "^3.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.3",
@@ -28,6 +30,9 @@
     "axios": "^1.4.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "dd-trace": "^4.13.1",
+    "nestjs-pino": "^3.4.0",
+    "pino-pretty": "^10.2.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.1",
     "rxjs": "^7.8.1"

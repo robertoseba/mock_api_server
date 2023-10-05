@@ -25,12 +25,36 @@
     }
   },
   {
-    "url": "enotas/8DF75FF9-720A-457B-82AE-5C7EC42B0900/nfes/",
     "method": {
       "POST": {
         "response_status": 200,
         "response_data": {
-          "nfeId": "<id>"
+          "nfeId": "<idExterno>"
+        },
+        "callback": {
+          "url": "http://0.0.0.0:3000/callback",
+          "payload": {
+            "tipo": "xyz",
+            "empresaId": "zy",
+            "nfeId": "<idExterno>",
+            "nfeIdExterno": "hml-<idExterno>",
+            "nfeStatus": "Autorizada",
+            "nfeMotivoStatus": "-",
+            "nfeLinkPdf": "",
+            "nfeLinkXml": "https://drive.google.com/file/d/1C-g31aZmQTUYOjhWP33gXpP-V4zDQk9q",
+            "nfeNumero": "",
+            "nfeCodigoVerificacao": "string",
+            "nfeNumeroRps": "string",
+            "nfeSerieRps": "string",
+            "nfeDataCompetencia": "2023-06-01 00:00:00",
+            "nfeDataAutorizacao": "2023-06-01 00:00:00",
+            "nfeDataCancelamento": null,
+            "instrucoesAutenticidadeNota": "unknown",
+            "nfeWebHookMetadados": "unknown"
+          },
+          "method": "POST",
+          // Delay em milliseconds para chamada do callback
+          "delay_ms": 2000
         }
       }
     }

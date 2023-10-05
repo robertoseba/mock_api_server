@@ -47,8 +47,13 @@ export class RouteService {
     this.logger.debug(`Triggered response: ${JSON.stringify(routeData)}`);
 
     if (routeData.callback) {
+      const modifiedPayload = this.replacePlaceholdersInResponse(
+        routeData.callback.payload,
+        body,
+      );
+
       setTimeout(() => {
-        this.processCallback(route, routeData.callback);
+        this.processCallback(route, routeData.callback, modifiedPayload);
       }, routeData.callback.delay_ms);
     }
 
@@ -71,18 +76,19 @@ export class RouteService {
   private async processCallback(
     route: string,
     callback: CallBackInfo,
+    payload: Record<any, any>,
   ): Promise<void> {
     try {
       const response = await axios({
         method: callback.method,
         url: callback.url,
-        data: callback.payload,
+        data: payload,
         responseType: 'json',
       });
       this.logger.debug(`Processing calllback from route: ${route}`);
       this.logger.debug(`${callback.method} -> ${callback.url}`);
       this.logger.debug(`Response status: ${response.status}`);
-      this.logger.debug(JSON.stringify(response.data));
+      this.logger.debug(JSON.stringify(payload));
     } catch (err) {
       this.logger.error(err);
     }
@@ -111,12 +117,10 @@ export class RouteService {
     if (Object.keys(postBody).length === 0) {
       return routeResponse;
     }
-
     let stringData = JSON.stringify(routeResponse);
-
     Object.keys(postBody).forEach((key) => {
-      stringData = stringData.replace(
-        `"<${key}>"`,
+      stringData = stringData.replaceAll(
+        `<${key}>`,
         JSON.stringify(postBody[key]),
       );
     });

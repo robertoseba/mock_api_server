@@ -13,7 +13,6 @@ export class CoreController {
       req.method,
       req.body,
     );
-
     return res.status(responseStatus).json(responseData);
   }
 }
