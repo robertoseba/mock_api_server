@@ -37,7 +37,7 @@
             "tipo": "xyz",
             "empresaId": "zy",
             "nfeId": "<idExterno>",
-            "nfeIdExterno": "hml-<idExterno>",
+            "nfeIdExterno": "<idExterno>",
             "nfeStatus": "Autorizada",
             "nfeMotivoStatus": "-",
             "nfeLinkPdf": "",
@@ -53,7 +53,6 @@
             "nfeWebHookMetadados": "unknown"
           },
           "method": "POST",
-          // Delay em milliseconds para chamada do callback
           "delay_ms": 2000
         }
       }
