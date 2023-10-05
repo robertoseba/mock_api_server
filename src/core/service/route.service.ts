@@ -120,7 +120,7 @@ export class RouteService {
     let stringData = JSON.stringify(routeResponse);
     Object.keys(postBody).forEach((key) => {
       stringData = stringData.replaceAll(
-        `<${key}>`,
+        `"<${key}>"`,
         JSON.stringify(postBody[key]),
       );
     });
