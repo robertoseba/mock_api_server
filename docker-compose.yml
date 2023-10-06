@@ -15,7 +15,7 @@ services:
     hostname: 'datadog-agent'
     restart: 'on-failure'
     environment:
-      - 'DD_API_KEY=5bee66aca7b120143bdd67138409d39b'
+      - 'DD_API_KEY=xxx'
       - 'DD_ENV=local'
       - 'DD_APM_ENABLED=true'
       - 'DD_SITE=datadoghq.com'
