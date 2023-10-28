@@ -12,6 +12,14 @@
         "response_status": 201,
         "response_data": {
           "response": "<id>"
+        },
+        "callback": {
+          "url": "http://localhost:5000",
+          "payload": {
+            "id": "<id>"
+          },
+          "method": "GET",
+          "delay_ms": 2000
         }
       }
     }
