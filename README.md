@@ -1,34 +1,33 @@
 # Mock API Server
 
-Servidor para prover endpoints para "mockar" respostas e callbacks.
+Mock API server with callback responses
 
-## Detalhes técnicos:
+## Tech stack:
 
 - Framework: NestJs
 - Database: In-memory
 - Testing framework: Jest
 
-## Instalação:
+## Installlation:
 
-- Baixe o repositório
+- Clone repo
 - `docker-compose up`
 
-# Pre-cadastrando usando arquivo json
+# Setup routes and callbacks using a JSON file
 
-Editar o arquivo `./mocks/mocks.json` com as rotas a serem implementadas.
-Seguir o exemplo já presente no arquivo e na documentação abaixo.
+Edit the file `./mocks/mocks.json`.
 
-# Interagindo pela API:
+Follow the example already present in the file to create new routes.
 
-## Cadastrando um novo endpoint para mock:
+# Interacting with the API:
 
-Suponhamos que queira criar um mock do endpoint: `/melhorenvio/boleto`
+## Adding new endpoint temporarily using the API:
 
-- Fazer um POST para: `/config/melhorenvio/boleto` (toda rota após /config/ será gravada como chave do registro)
+Supose you want to create a new endpoint: `/credit-card-processor/pay`
 
-- Payload (Especificar os métodos que o endpoint irá aceitar e parametros):
-- Caso queira que a resposta contenha alguma informação vinda do POST, você pode identicar usando `<chave-do-post>`.
-  Ex: No body do POST vc enviou {"id":1} então no corpo abaixo a resposta ficaria:
+- send a POST request to: `/config/credit-card-processor/pay` - anything after config becomes your identifier for this endpoint
+
+Example payload for the example route:
 
 ```json
 {
@@ -37,7 +36,7 @@ Suponhamos que queira criar um mock do endpoint: `/melhorenvio/boleto`
       "response_status": 201,
       "response_data": {
         "externalId": "<id>",
-        "message": "Record created successfully"
+        "message": "Payment created successfully"
       }
     },
     "GET": {
@@ -48,54 +47,63 @@ Suponhamos que queira criar um mock do endpoint: `/melhorenvio/boleto`
 }
 ```
 
-## Verificando informações cadastradas para rota:
+You can setup custom responses from the endpoint by specifying special keys using this notation: `<key>`.
+In the example above, every POST request send to this endpoint will response with the `id` sent in the POST request body.
 
-- Fazer um GET para a rota cadastrada prefixado com `config`.
-  Exemplo GET->`/config/melhorenvio/boleto`.
+If I send a POST request to `<server-url>/credit-card-processor/pay` with the body `{id:256}` then my mock endpoint will return a status code 201 with the following body `{"externalId": 256, "message": "Payment created successfully"}`
 
-## Acessando o endpoint cadastrado:
+## Check your route configuration:
 
-- Cadastramos os métodos POST e GET. Então ao acessar o endpoint `http://localhost/melhorenvio/boleto` com GET teremos a resposta cadastrada em `response_data` com o status `response_status`.
+GET `config/<your-custom-route>`
 
-O mesmo é válido para o caso do método POST cadastrado.
+Example: GET->`/config/credit-card-processor/pay`.
 
-## Atualizando o endpoint cadastrado:
+## Updating the response from a endpoint:
 
-- Fazer um PATCH para a rota cadastrada prefixado com `config`.
-  Exemplo PATCH->`/config/melhorenvio/boleto`. O payload deve seguir o formato usado no cadastro.
+PATCH `config/<your-custom-route>`
 
-## Deletando uma rota cadastrada:
+Exemplo PATCH->`/config/credit-card-processor/pay`.
+The payload must follow the same format from the add endpoint instructions
 
-- Fazer um DELETE para a rota cadastrada prefixado com `config`.
-  Exemplo DELETE->`/config/melhorenvio/boleto`.
+## Deleting a route:
+
+DELETE `config/<your-custom-route>`
 
 <br />
 
-# Usando callbacks para retorno:
+# Callbacks:
 
-Além de cadastrar uma rota de mock, é possível cadastrar um callback para a rota responder asíncronamente, simulando um callback do servidor a ser "mockado".
-Para cadastrar um endpoint com callback fazer o processo de cadastro mas incluir as seguintes informações no payload:
+This was the main motivation for creating this mock-server.
+You can not only create mock routes, but program them to respond assynchronously to your requests.
 
-Payload:
+To add callback to your routes you can especify the callback info when creating a mock route.
+
+Example Payload:
 
 ```json
 {
   "method": {
     "POST": {
-      "response_status": 200,
+      "response_status": 201,
       "response_data": {
-        "hello": "world"
+        "externalId": "<id>",
+        "message": "Payment created successfully"
       },
       "callback": {
-        "url": "http://melhorenvio.com/boleto/callback",
+        "url": "http://<respond-to-url>",
         "payload": {
-          "boleto_id": "001",
-          "status": "paid"
+          "payment_id": "001",
+          "externalId": "<id>", // Also supports dynamic fields
+          "status": "paid",
+          "message": "Payment processed successfully"
         },
-        "method": "GET",
-        // Delay em milliseconds para chamada do callback
-        "delay_ms": 2000
+        "method": "POST",
+        "delay_ms": 2000 // Delay in ms before emiting the callback
       }
+    },
+    "GET": {
+      "response_status": 200,
+      "response_data": [{ "paid": true, "code": "0001" }]
     }
   }
 }

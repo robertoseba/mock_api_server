@@ -1,4 +1,3 @@
-import { DatadogModule } from '@melhorenvio/datadog-ts';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -27,15 +26,6 @@ import { LoggerModule } from 'nestjs-pino';
               }
             : undefined,
         },
-      }),
-    }),
-    DatadogModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        runtimeMetrics: true,
-        logInjection: true,
-        exclude_fields: {},
-        service: `invoices-emitter-${config.get('NODE_ENV')}`,
       }),
     }),
     HttpModule,
