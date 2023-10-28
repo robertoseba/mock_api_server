@@ -1,0 +1,23 @@
+name: 'CI - Continuous Integration'
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+jobs:
+  tests:
+    name: Running Tests
+    runs-on: ubuntu-latest
+
+    services:
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Install modules
+        run: npm install
+
+      - name: Run e2e tests
+        run: npm run test:e2e
