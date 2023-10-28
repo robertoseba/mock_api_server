@@ -93,9 +93,6 @@
     ],
     "clearMocks": true,
     "coverageDirectory": "coverage",
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest-setup.ts"
-    ]
+    "testEnvironment": "node"
   }
 }

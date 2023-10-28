@@ -1,18 +1,34 @@
+import { join, resolve } from 'node:path';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
 import { readFile } from 'fs/promises';
-import { CreateRouteDTO } from 'src/core/dto/create_route_dto';
+import { ConfigService } from '@nestjs/config';
+import { CreateRouteDTO } from '../dto/create_route_dto';
 
 @Injectable()
 export class RouteRepository implements OnModuleInit {
   private readonly logger = new Logger(RouteRepository.name);
   private routes: Record<string, CreateRouteDTO> = {};
 
+  constructor(private configService: ConfigService) {}
+
   async onModuleInit() {
-    this.logger.debug('Pre-loading routes from json files...');
     try {
+      if (!this.configService.get('MOCK_FILE')) {
+        this.logger.debug(
+          'No mock configuration especified. Skipping json file loading...',
+        );
+        return;
+      }
+
+      const filePath = resolve(
+        join(__dirname, '/../../../../', this.configService.get('MOCK_FILE')),
+      );
+
+      this.logger.debug(`Pre-loading routes from json file: ${filePath}`);
+
       const routes: Record<string, any>[] = JSON.parse(
-        await readFile(`${__dirname}/../../../../mocks/mocks.json`, {
+        await readFile(filePath, {
           encoding: 'utf8',
         }),
       );

@@ -1,4 +1,3 @@
-import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CoreModule } from './core/core.module';
@@ -8,7 +7,7 @@ import { LoggerModule } from 'nestjs-pino';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env', `config/${process.env.NODE_ENV}.env`],
+      envFilePath: ['.env'],
     }),
     LoggerModule.forRootAsync({
       inject: [ConfigService],
@@ -28,7 +27,6 @@ import { LoggerModule } from 'nestjs-pino';
         },
       }),
     }),
-    HttpModule,
     CoreModule,
   ],
 })

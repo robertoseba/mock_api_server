@@ -5,7 +5,7 @@ import {
 } from 'class-validator';
 
 export function IsRestMethod(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'IsRestMethod',
       target: object.constructor,
@@ -17,7 +17,7 @@ export function IsRestMethod(validationOptions?: ValidationOptions) {
           const invalidMethods = Object.keys(value).filter((key) => {
             return !['POST', 'GET', 'DELETE', 'PATCH'].includes(key);
           });
-          return invalidMethods.length > 0 ? false : true;
+          return invalidMethods.length <= 0;
         },
       },
     });
