@@ -8,7 +8,7 @@ dotenv.config({
   path: `./${process.env.NODE_ENV}.env`,
 });
 
-const PORT = +process.env.PORT || 5000;
+const PORT = process.env.PORT ? +process.env.PORT : 5000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });

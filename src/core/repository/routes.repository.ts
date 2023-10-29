@@ -14,16 +14,15 @@ export class RouteRepository implements OnModuleInit {
 
   async onModuleInit() {
     try {
-      if (!this.configService.get('MOCK_FILE')) {
+      const mockFilePath = this.configService.get('MOCK_FILE');
+      if (!mockFilePath) {
         this.logger.debug(
           'No mock configuration especified. Skipping json file loading...',
         );
         return;
       }
 
-      const filePath = resolve(
-        join(__dirname, '/../../../../', this.configService.get('MOCK_FILE')),
-      );
+      const filePath = resolve(join(__dirname, '/../../../', mockFilePath));
 
       this.logger.debug(`Pre-loading routes from json file: ${filePath}`);
 

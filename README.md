@@ -15,7 +15,7 @@ Mock API server with callback responses
 
 # Setup routes and callbacks using a JSON file
 
-Edit the file `./mocks/mocks.json`.
+Edit the file `./mock_routes/mocks.json`.
 
 Follow the example already present in the file to create new routes.
 

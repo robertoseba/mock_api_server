@@ -7,7 +7,7 @@ import { RouteService } from '../src/core/service/route.service';
 import { RouteRepository } from '../src/core/repository/routes.repository';
 
 const testConfig = () => ({
-  MOCK_FILE: './mock_api_nest/test/fixtures/mock-test-routes.json',
+  MOCK_FILE: './test/fixtures/mock-test-routes.json',
 });
 
 jest.mock('axios', () => ({
