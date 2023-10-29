@@ -8,7 +8,7 @@ import {
   Get,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { CreateRouteDTO } from '../core/dto/create_route_dto';
+import { CreateRouteDTO } from '../common/dto/create_route_dto';
 import { CreateRouteAction } from './use_cases/create_route_action';
 import { DeleteRouteAction } from './use_cases/delete_route_action';
 import { UpdateRouteAction } from './use_cases/update_route_action';

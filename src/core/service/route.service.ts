@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { RouteRepository } from '../repository/routes.repository';
-import { CallBackInfo, RouteInfo } from '../dto/create_route_dto';
+import { RouteRepository } from '../../common/repository/routes.repository';
+import { CallBackInfo, RouteInfo } from '../../common/dto/create_route_dto';
 import { HttpService } from '../../infrastructure/http/http.abstract';
 
 @Injectable()

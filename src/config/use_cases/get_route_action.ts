@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { RouteRepository } from '../../core/repository/routes.repository';
-import { CreateRouteDTO } from '../../core/dto/create_route_dto';
+import { CreateRouteDTO } from '../../common/dto/create_route_dto';
+import { RouteRepository } from '../../common/repository/routes.repository';
 
 @Injectable()
 export class GetRouteAction {

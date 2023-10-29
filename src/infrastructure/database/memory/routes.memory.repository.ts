@@ -3,8 +3,8 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
 import { readFile } from 'fs/promises';
 import { ConfigService } from '@nestjs/config';
-import { CreateRouteDTO } from '../../../core/dto/create_route_dto';
-import { RouteRepository } from '../../../core/repository/routes.repository';
+import { CreateRouteDTO } from '../../../common/dto/create_route_dto';
+import { RouteRepository } from '../../../common/repository/routes.repository';
 
 @Injectable()
 export class RouteMemoryRepository implements RouteRepository, OnModuleInit {
