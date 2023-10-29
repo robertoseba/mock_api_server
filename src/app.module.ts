@@ -28,6 +28,7 @@ import { LoggerModule } from 'nestjs-pino';
       }),
     }),
     CoreModule,
+    ConfigModule,
   ],
 })
 export class AppModule {}

@@ -1,15 +1,6 @@
-import {
-  ConflictException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { RouteRepository } from '../repository/routes.repository';
-import {
-  CallBackInfo,
-  CreateRouteDTO,
-  RouteInfo,
-} from '../dto/create_route_dto';
+import { CallBackInfo, RouteInfo } from '../dto/create_route_dto';
 import { HttpService } from '../../infrastructure/http/http.abstract';
 
 @Injectable()
@@ -21,22 +12,22 @@ export class RouteService {
     private readonly httpService: HttpService,
   ) {}
 
-  createRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
-    if (this.routesRepository.getRoute(route)) {
-      throw new ConflictException('Route already exists');
-    }
-    return this.routesRepository.createRoute(route, createRouteDTO);
-  }
+  // createRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
+  //   if (this.routesRepository.getRoute(route)) {
+  //     throw new ConflictException('Route already exists');
+  //   }
+  //   return this.routesRepository.createRoute(route, createRouteDTO);
+  // }
 
-  deleteRoute(route: string): boolean {
-    this.checkExists(route);
-    return this.routesRepository.deleteRoute(route);
-  }
+  // deleteRoute(route: string): boolean {
+  //   this.checkExists(route);
+  //   return this.routesRepository.deleteRoute(route);
+  // }
 
-  updateRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
-    this.checkExists(route);
-    return this.routesRepository.updateRoute(route, createRouteDTO);
-  }
+  // updateRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
+  //   this.checkExists(route);
+  //   return this.routesRepository.updateRoute(route, createRouteDTO);
+  // }
 
   processRoute(route: string, method: string, body: Record<string, any>) {
     const routeData = this.getRouteData(route, method);
@@ -64,16 +55,6 @@ export class RouteService {
       responseStatus: routeData.response_status,
       responseData: formatedResponse,
     };
-  }
-
-  getRoute(route: string): CreateRouteDTO {
-    const routeData = this.routesRepository.getRoute(route);
-
-    if (!routeData) {
-      throw new NotFoundException('Route not found');
-    }
-
-    return routeData;
   }
 
   private async processCallback(
