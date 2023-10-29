@@ -11,7 +11,7 @@
       "POST": {
         "response_status": 200,
         "response_data": {
-          "response": "<name>"
+          "name": "<name>"
         },
         "callback": {
           "url": "http://localhost:3000",
