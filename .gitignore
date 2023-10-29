@@ -35,3 +35,7 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 .env
+
+#Mock Routes
+mock_routes/*
+!mock_routes/mocks.example.json
