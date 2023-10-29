@@ -25,7 +25,7 @@ Follow the example already present in the file to create new routes.
 
 Supose you want to create a new endpoint: `/credit-card-processor/pay`
 
-- send a POST request to: `/config/credit-card-processor/pay` - anything after config becomes your identifier for this endpoint
+- send a POST request to: `/management/credit-card-processor/pay` - anything after management becomes your identifier for this endpoint
 
 Example payload for the example route:
 
@@ -54,20 +54,20 @@ If I send a POST request to `<server-url>/credit-card-processor/pay` with the bo
 
 ## Check your route configuration:
 
-GET `config/<your-custom-route>`
+GET `/management/<your-custom-route>`
 
-Example: GET->`/config/credit-card-processor/pay`.
+Example: GET->`/management/credit-card-processor/pay`.
 
 ## Updating the response from a endpoint:
 
-PATCH `config/<your-custom-route>`
+PATCH `/management/<your-custom-route>`
 
-Exemplo PATCH->`/config/credit-card-processor/pay`.
+Exemplo PATCH->`/management/credit-card-processor/pay`.
 The payload must follow the same format from the add endpoint instructions
 
 ## Deleting a route:
 
-DELETE `config/<your-custom-route>`
+DELETE `/management/<your-custom-route>`
 
 <br />
 
