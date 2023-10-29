@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { ConfigModule } from '@nestjs/config';
-import { RouteService } from '../src/application/core/service/route.service';
 import { CoreModule } from '../src/application/core/core.module';
+import { ProcessRouteAction } from '../src/application/core/use_cases/process_route_action';
 
 const testConfig = () => ({
   MOCK_FILE: './test/fixtures/mock-test-routes.json',
@@ -25,7 +25,7 @@ jest.spyOn(global, 'setTimeout');
 describe('Core (e2e)', () => {
   let app: INestApplication;
 
-  let routeService: RouteService;
+  let routeAction: ProcessRouteAction;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -41,7 +41,7 @@ describe('Core (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
 
-    routeService = moduleFixture.get<RouteService>(RouteService);
+    routeAction = moduleFixture.get<ProcessRouteAction>(ProcessRouteAction);
 
     await app.init();
   });
@@ -60,7 +60,7 @@ describe('Core (e2e)', () => {
 
     it('/hello (POST) with callback', async () => {
       const spyProcessCallback = jest.spyOn(
-        routeService as any,
+        routeAction as any,
         'processCallback',
       );
 

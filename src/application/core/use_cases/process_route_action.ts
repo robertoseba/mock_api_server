@@ -7,15 +7,15 @@ import {
 } from '../../shared/entities/route.entity';
 
 @Injectable()
-export class RouteService {
-  private readonly logger = new Logger(RouteService.name);
+export class ProcessRouteAction {
+  private readonly logger = new Logger(ProcessRouteAction.name);
 
   constructor(
     private readonly routesRepository: RouteRepository,
     private readonly httpService: HttpService,
   ) {}
 
-  processRoute(route: string, method: string, body: Record<string, any>) {
+  execute(route: string, method: string, body: Record<string, any>) {
     const routeData = this.getRouteData(route, method);
 
     const formatedResponse = this.replacePlaceholdersInResponse(
