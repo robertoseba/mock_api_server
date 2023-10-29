@@ -10,13 +10,16 @@ import {
   CreateRouteDTO,
   RouteInfo,
 } from '../dto/create_route_dto';
-import axios from 'axios';
+import { HttpService } from '../../infrastructure/http/http.abstract';
 
 @Injectable()
 export class RouteService {
   private readonly logger = new Logger(RouteService.name);
 
-  constructor(private readonly routesRepository: RouteRepository) {}
+  constructor(
+    private readonly routesRepository: RouteRepository,
+    private readonly httpService: HttpService,
+  ) {}
 
   createRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
     if (this.routesRepository.getRoute(route)) {
@@ -79,11 +82,10 @@ export class RouteService {
     payload: Record<any, any>,
   ): Promise<void> {
     try {
-      const response = await axios({
+      const response = await this.httpService.request({
         method: callback.method,
         url: callback.url,
         data: payload,
-        responseType: 'json',
       });
       this.logger.debug(`Processing calllback from route: ${route}`);
       this.logger.debug(`${callback.method} -> ${callback.url}`);
