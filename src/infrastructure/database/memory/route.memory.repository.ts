@@ -3,12 +3,18 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
 import { readFile } from 'fs/promises';
 import { ConfigService } from '@nestjs/config';
-import { CreateRouteDTO } from '../dto/create_route_dto';
+import { CreateRouteDTO } from '../../../application/management/dto/create_route_dto';
+import { RouteRepository } from '../../../application/shared/repository/route.repository';
+import {
+  MethodInterface,
+  RouteEntity,
+} from '../../../application/shared/entities/route.entity';
 
 @Injectable()
-export class RouteRepository implements OnModuleInit {
-  private readonly logger = new Logger(RouteRepository.name);
-  private routes: Record<string, CreateRouteDTO> = {};
+export class RouteMemoryRepository implements RouteRepository, OnModuleInit {
+  private readonly logger = new Logger(RouteMemoryRepository.name);
+
+  private routes: Record<string, RouteEntity> = {};
 
   constructor(private configService: ConfigService) {}
 
@@ -22,7 +28,7 @@ export class RouteRepository implements OnModuleInit {
         return;
       }
 
-      const filePath = resolve(join(__dirname, '/../../../', mockFilePath));
+      const filePath = resolve(join(__dirname, '../../../../', mockFilePath));
 
       this.logger.debug(`Pre-loading routes from json file: ${filePath}`);
 
@@ -51,7 +57,7 @@ export class RouteRepository implements OnModuleInit {
     }
   }
 
-  getRoute(route: string): CreateRouteDTO | null {
+  getRoute(route: string): RouteEntity | null {
     if (!Object.hasOwn(this.routes, route)) {
       return null;
     }
@@ -59,8 +65,16 @@ export class RouteRepository implements OnModuleInit {
     return this.routes[route];
   }
 
-  createRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
-    this.routes[route] = createRouteDTO;
+  createRoute(route: string, createRouteDTO: CreateRouteDTO): RouteEntity {
+    this.routes[route] = new RouteEntity({
+      url: route,
+      method: {
+        GET: createRouteDTO.method.GET as MethodInterface | undefined,
+        PATCH: createRouteDTO.method.PATCH as MethodInterface | undefined,
+        DELETE: createRouteDTO.method.DELETE as MethodInterface | undefined,
+        POST: createRouteDTO.method.POST as MethodInterface | undefined,
+      },
+    });
 
     return this.routes[route];
   }
@@ -71,7 +85,7 @@ export class RouteRepository implements OnModuleInit {
     return true;
   }
 
-  updateRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
+  updateRoute(route: string, createRouteDTO: CreateRouteDTO): RouteEntity {
     return this.createRoute(route, createRouteDTO);
   }
 }
