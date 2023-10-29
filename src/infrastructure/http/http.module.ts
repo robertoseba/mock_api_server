@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { HttpService } from './http.abstract';
-import { HttpAxiosService } from './httpAxios.service';
+import { HttpAxiosService } from './http_axios.service';
 
 @Module({
   providers: [
