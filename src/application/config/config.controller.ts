@@ -8,14 +8,14 @@ import {
   Get,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { CreateRouteDTO } from './dto/create_route_dto';
+import { CreateRouteDTO } from '../management/dto/create_route_dto';
 import { CreateRouteAction } from './use_cases/create_route_action';
 import { DeleteRouteAction } from './use_cases/delete_route_action';
 import { UpdateRouteAction } from './use_cases/update_route_action';
 import { GetRouteAction } from './use_cases/get_route_action';
 
-@Controller('/management')
-export class ManagementController {
+@Controller('/config')
+export class ConfigController {
   constructor(
     private readonly createAction: CreateRouteAction,
     private readonly deleteAction: DeleteRouteAction,

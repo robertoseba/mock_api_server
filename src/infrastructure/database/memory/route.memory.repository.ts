@@ -3,7 +3,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
 import { readFile } from 'fs/promises';
 import { ConfigService } from '@nestjs/config';
-import { CreateRouteDTO } from '../../../application/shared/dto/create_route_dto';
+import { CreateRouteDTO } from '../../../application/management/dto/create_route_dto';
 import { RouteRepository } from '../../../application/shared/repository/route.repository';
 import { RouteEntity } from '../../../application/shared/entities/route.entity';
 

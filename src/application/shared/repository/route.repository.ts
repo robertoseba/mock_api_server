@@ -1,4 +1,4 @@
-import { CreateRouteDTO } from '../dto/create_route_dto';
+import { CreateRouteDTO } from '../../management/dto/create_route_dto';
 import { RouteEntity } from '../entities/route.entity';
 
 export abstract class RouteRepository {
