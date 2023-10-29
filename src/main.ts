@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from './application/app.module';
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';

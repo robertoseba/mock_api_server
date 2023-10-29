@@ -1,7 +1,10 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { RouteRepository } from '../../common/repository/routes.repository';
-import { CallBackInfo, RouteInfo } from '../../common/dto/create_route_dto';
-import { HttpService } from '../../infrastructure/http/http.abstract';
+import { RouteRepository } from '../../shared/repository/route.repository';
+import { HttpService } from '../../../infrastructure/http/http.abstract';
+import {
+  CallbackInterface,
+  MethodInterface,
+} from '../../shared/entities/route.entity';
 
 @Injectable()
 export class RouteService {
@@ -11,23 +14,6 @@ export class RouteService {
     private readonly routesRepository: RouteRepository,
     private readonly httpService: HttpService,
   ) {}
-
-  // createRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
-  //   if (this.routesRepository.getRoute(route)) {
-  //     throw new ConflictException('Route already exists');
-  //   }
-  //   return this.routesRepository.createRoute(route, createRouteDTO);
-  // }
-
-  // deleteRoute(route: string): boolean {
-  //   this.checkExists(route);
-  //   return this.routesRepository.deleteRoute(route);
-  // }
-
-  // updateRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
-  //   this.checkExists(route);
-  //   return this.routesRepository.updateRoute(route, createRouteDTO);
-  // }
 
   processRoute(route: string, method: string, body: Record<string, any>) {
     const routeData = this.getRouteData(route, method);
@@ -41,14 +27,7 @@ export class RouteService {
     this.logger.debug(`Triggered response: ${JSON.stringify(routeData)}`);
 
     if (routeData.callback) {
-      const modifiedPayload = this.replacePlaceholdersInResponse(
-        routeData.callback.payload,
-        body,
-      );
-
-      setTimeout(() => {
-        this.processCallback(route, routeData.callback, modifiedPayload);
-      }, routeData.callback.delay_ms);
+      this.processCallback(route, routeData, body);
     }
 
     return {
@@ -57,9 +36,24 @@ export class RouteService {
     };
   }
 
-  private async processCallback(
+  private processCallback(
     route: string,
-    callback: CallBackInfo,
+    routeData: MethodInterface,
+    requestBody: Record<string, any>,
+  ) {
+    const modifiedPayload = this.replacePlaceholdersInResponse(
+      routeData.callback.payload,
+      requestBody,
+    );
+
+    setTimeout(() => {
+      this.executeCallback(route, routeData.callback, modifiedPayload);
+    }, routeData.callback.delay_ms);
+  }
+
+  private async executeCallback(
+    route: string,
+    callback: CallbackInterface,
     payload: Record<any, any>,
   ): Promise<void> {
     try {
@@ -77,20 +71,14 @@ export class RouteService {
     }
   }
 
-  private getRouteData(route: string, method: string): RouteInfo {
+  private getRouteData(route: string, method: string): MethodInterface {
     const routeData = this.routesRepository.getRoute(route);
 
-    if (!routeData || !Object.hasOwn(routeData.method, method)) {
+    if (!routeData || !Object.hasOwn(routeData.data.method, method)) {
       throw new NotFoundException('Route not found');
     }
 
-    return routeData.method[method];
-  }
-
-  private checkExists(route: string): void {
-    if (!this.routesRepository.getRoute(route)) {
-      throw new NotFoundException('Route not found');
-    }
+    return routeData.data.method[method];
   }
 
   private replacePlaceholdersInResponse(

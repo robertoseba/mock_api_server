@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { ConfigModule } from '@nestjs/config';
-import { RouteService } from '../src/core/service/route.service';
-import { RouteRepository } from '../src/common/repository/routes.repository';
-import { CoreModule } from '../src/core/core.module';
+import { RouteService } from '../src/application/core/service/route.service';
+import { RouteRepository } from '../src/application/shared/repository/route.repository';
+import { CoreModule } from '../src/application/core/core.module';
 
 const testConfig = () => ({
   MOCK_FILE: './test/fixtures/mock-test-routes.json',

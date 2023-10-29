@@ -3,14 +3,15 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
 import { readFile } from 'fs/promises';
 import { ConfigService } from '@nestjs/config';
-import { CreateRouteDTO } from '../../../common/dto/create_route_dto';
-import { RouteRepository } from '../../../common/repository/routes.repository';
+import { CreateRouteDTO } from '../../../application/shared/dto/create_route_dto';
+import { RouteRepository } from '../../../application/shared/repository/route.repository';
+import { RouteEntity } from '../../../application/shared/entities/route.entity';
 
 @Injectable()
 export class RouteMemoryRepository implements RouteRepository, OnModuleInit {
   private readonly logger = new Logger(RouteMemoryRepository.name);
 
-  private routes: Record<string, CreateRouteDTO> = {};
+  private routes: Record<string, RouteEntity> = {};
 
   constructor(private configService: ConfigService) {}
 
@@ -53,7 +54,7 @@ export class RouteMemoryRepository implements RouteRepository, OnModuleInit {
     }
   }
 
-  getRoute(route: string): CreateRouteDTO | null {
+  getRoute(route: string): RouteEntity | null {
     if (!Object.hasOwn(this.routes, route)) {
       return null;
     }
@@ -61,8 +62,16 @@ export class RouteMemoryRepository implements RouteRepository, OnModuleInit {
     return this.routes[route];
   }
 
-  createRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
-    this.routes[route] = createRouteDTO;
+  createRoute(route: string, createRouteDTO: CreateRouteDTO): RouteEntity {
+    this.routes[route] = new RouteEntity({
+      url: route,
+      method: {
+        GET: createRouteDTO.method.GET as any,
+        PATCH: createRouteDTO.method.PATCH as any,
+        DELETE: createRouteDTO.method.DELETE as any,
+        POST: createRouteDTO.method.POST as any,
+      },
+    });
 
     return this.routes[route];
   }
@@ -73,7 +82,7 @@ export class RouteMemoryRepository implements RouteRepository, OnModuleInit {
     return true;
   }
 
-  updateRoute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
+  updateRoute(route: string, createRouteDTO: CreateRouteDTO): RouteEntity {
     return this.createRoute(route, createRouteDTO);
   }
 }

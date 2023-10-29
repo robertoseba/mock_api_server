@@ -1,14 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateRouteDTO } from '../../common/dto/create_route_dto';
-import { RouteRepository } from '../../common/repository/routes.repository';
+import { RouteRepository } from '../../shared/repository/route.repository';
 
 @Injectable()
-export class UpdateRouteAction {
+export class DeleteRouteAction {
   constructor(private readonly routesRepository: RouteRepository) {}
 
-  execute(route: string, createRouteDTO: CreateRouteDTO): CreateRouteDTO {
+  execute(route: string): boolean {
     this.checkExists(route);
-    return this.routesRepository.updateRoute(route, createRouteDTO);
+    return this.routesRepository.deleteRoute(route);
   }
 
   private checkExists(route: string): void {

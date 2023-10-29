@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { CoreModule } from './core/core.module';
+import { ManagementModule } from './management/mgnt.module';
 
 @Module({
   imports: [
@@ -27,8 +28,8 @@ import { CoreModule } from './core/core.module';
         },
       }),
     }),
+    ManagementModule,
     CoreModule,
-    ConfigModule,
   ],
 })
 export class AppModule {}
