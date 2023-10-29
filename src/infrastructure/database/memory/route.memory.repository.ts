@@ -5,7 +5,10 @@ import { readFile } from 'fs/promises';
 import { ConfigService } from '@nestjs/config';
 import { CreateRouteDTO } from '../../../application/management/dto/create_route_dto';
 import { RouteRepository } from '../../../application/shared/repository/route.repository';
-import { RouteEntity } from '../../../application/shared/entities/route.entity';
+import {
+  MethodInterface,
+  RouteEntity,
+} from '../../../application/shared/entities/route.entity';
 
 @Injectable()
 export class RouteMemoryRepository implements RouteRepository, OnModuleInit {
@@ -66,10 +69,10 @@ export class RouteMemoryRepository implements RouteRepository, OnModuleInit {
     this.routes[route] = new RouteEntity({
       url: route,
       method: {
-        GET: createRouteDTO.method.GET as any,
-        PATCH: createRouteDTO.method.PATCH as any,
-        DELETE: createRouteDTO.method.DELETE as any,
-        POST: createRouteDTO.method.POST as any,
+        GET: createRouteDTO.method.GET as MethodInterface | undefined,
+        PATCH: createRouteDTO.method.PATCH as MethodInterface | undefined,
+        DELETE: createRouteDTO.method.DELETE as MethodInterface | undefined,
+        POST: createRouteDTO.method.POST as MethodInterface | undefined,
       },
     });
 

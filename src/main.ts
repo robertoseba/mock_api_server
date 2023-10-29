@@ -1,12 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './application/app.module';
-import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
-
-dotenv.config({
-  path: `./${process.env.NODE_ENV}.env`,
-});
 
 const PORT = process.env.PORT ? +process.env.PORT : 5000;
 
