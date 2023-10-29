@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IsRestMethod } from './custom_validators/method_validator';
+import { allowedMethods } from '../../shared/entities/route.entity';
 
 class CallBackInfo {
   @IsNotEmpty()
@@ -22,7 +23,7 @@ class CallBackInfo {
   payload: Record<string, unknown>;
 
   @IsNotEmpty()
-  @IsIn(['POST', 'PATCH', 'DELETE', 'GET'])
+  @IsIn(Object.keys(allowedMethods))
   method: string;
 
   @IsNotEmpty()

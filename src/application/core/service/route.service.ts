@@ -27,7 +27,7 @@ export class RouteService {
     this.logger.debug(`Triggered response: ${JSON.stringify(routeData)}`);
 
     if (routeData.callback) {
-      this.processCallback(route, routeData, body);
+      this.processCallback(route, routeData.callback, body);
     }
 
     return {
@@ -38,17 +38,17 @@ export class RouteService {
 
   private processCallback(
     route: string,
-    routeData: MethodInterface,
+    routeDataCallback: CallbackInterface,
     requestBody: Record<string, any>,
   ) {
     const modifiedPayload = this.replacePlaceholdersInResponse(
-      routeData.callback.payload,
+      routeDataCallback.payload,
       requestBody,
     );
 
     setTimeout(() => {
-      this.executeCallback(route, routeData.callback, modifiedPayload);
-    }, routeData.callback.delay_ms);
+      this.executeCallback(route, routeDataCallback, modifiedPayload);
+    }, routeDataCallback.delay_ms);
   }
 
   private async executeCallback(

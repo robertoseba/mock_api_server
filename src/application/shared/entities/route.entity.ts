@@ -1,23 +1,23 @@
-const allowedMethods = {
+export const allowedMethods = {
   POST: 'POST',
   PATCH: 'PATCH',
   DELETE: 'DELETE',
   GET: 'GET',
 } as const;
 
-type methodKey = (typeof allowedMethods)[keyof typeof allowedMethods];
+type methodKeyType = (typeof allowedMethods)[keyof typeof allowedMethods];
 
 export interface CallbackInterface {
   url: string;
   payload: Record<any, unknown>;
-  method: methodKey;
+  method: methodKeyType;
   delay_ms: number;
 }
 
 export interface MethodInterface {
   response_status: number;
   response_data: Record<any, unknown> | Array<Record<any, unknown>>;
-  callback: CallbackInterface;
+  callback?: CallbackInterface;
 }
 
 interface RouteInterface {
