@@ -54,18 +54,23 @@ export class ProcessRouteAction {
   private async executeCallback(
     route: string,
     callback: CallbackInterface,
-    payload: Record<any, any>,
+    payload: Record<any, any> | Record<any, any>[],
   ): Promise<void> {
     try {
-      const response = await this.httpService.request({
-        method: callback.method,
-        url: callback.url,
-        data: payload,
-      });
-      this.logger.debug(`Processing calllback from route: ${route}`);
-      this.logger.debug(`${callback.method} -> ${callback.url}`);
-      this.logger.debug(`Response status: ${response.status}`);
-      this.logger.debug(JSON.stringify(payload));
+      const payloads = Array.isArray(payload) ? payload : [payload];
+
+      for (const payloadItem of payloads) {
+        const response = await this.httpService.request({
+          method: callback.method,
+          url: callback.url,
+          data: payloadItem,
+        });
+
+        this.logger.debug(`Processing callback from route: ${route}`);
+        this.logger.debug(`${callback.method} -> ${callback.url}`);
+        this.logger.debug(`Response status: ${response.status}`);
+        this.logger.debug(JSON.stringify(payload));
+      }
     } catch (err) {
       this.logger.error(err);
     }
