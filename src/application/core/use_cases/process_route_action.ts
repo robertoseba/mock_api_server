@@ -1,10 +1,10 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { RouteRepository } from '../../shared/repository/route.repository';
 import { HttpService } from '../../../infrastructure/http/http.abstract';
 import {
   CallbackInterface,
   MethodInterface,
 } from '../../shared/entities/route.entity';
+import { RouteRepository } from '../../shared/repository/route.repository';
 
 @Injectable()
 export class ProcessRouteAction {
@@ -62,6 +62,7 @@ export class ProcessRouteAction {
         url: callback.url,
         data: payload,
       });
+
       this.logger.debug(`Processing calllback from route: ${route}`);
       this.logger.debug(`${callback.method} -> ${callback.url}`);
       this.logger.debug(`Response status: ${response.status}`);
