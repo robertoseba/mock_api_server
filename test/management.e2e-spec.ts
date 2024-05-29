@@ -1,9 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
 import { ConfigModule } from '@nestjs/config';
-import { RouteRepository } from '../src/application/shared/repository/route.repository';
+import { Test, TestingModule } from '@nestjs/testing';
+import * as request from 'supertest';
 import { ManagementModule } from '../src/application/management/mgnt.module';
+import { RouteRepository } from '../src/application/shared/repository/route.repository';
 
 const testConfig = () => ({
   MOCK_FILE: './test/fixtures/mock-test-routes.json',
@@ -37,33 +37,44 @@ describe('Management (e2e)', () => {
     await app.close();
   });
 
-  // describe('creating new route', () => {
-  //   it('404 if route doesnt exist', async () => {
-  //     await request(app.getHttpServer())
-  //       .get('/management/new_route')
-  //       .expect(404);
-  //     expect(routeRepository.getRoute('new_route')).toBeNull();
-  //   });
+  describe('creating new route', () => {
+    it('404 if route doesnt exist', async () => {
+      await request(app.getHttpServer())
+        .get('/management/new_route')
+        .expect(404);
+      expect(routeRepository.getRoute('new_route')).toBeNull();
+    });
 
-  //   it('creates new route', async () => {
-  //     const newRouteData = {
-  //       GET: {
-  //         response_status: 200,
-  //         response_data: {
-  //           response: '<id>',
-  //         },
-  //       },
-  //     };
+    it('creates new route', async () => {
+      const newRouteData = {
+        method: {
+          POST: {
+            response_status: 200,
+            response_data: {
+              nfeId: '<id>',
+            },
+          },
+        },
+      };
 
-  //     await request(app.getHttpServer())
-  //       .post('/management/new_route')
-  //       .send(newRouteData)
-  //       .expect(201)
-  //       .expect(newRouteData);
+      const expectedResponse = {
+        data: {
+          url: 'new_route',
+          ...newRouteData,
+        },
+      };
 
-  //     expect(routeRepository.getRoute('new_route')).toEqual(newRouteData);
-  //   });
-  // });
+      await request(app.getHttpServer())
+        .post('/management/new_route')
+        .send(newRouteData)
+        .expect(201)
+        .expect(expectedResponse);
+
+      expect(routeRepository.getRoute('new_route')).toEqual(
+        expect.objectContaining(expectedResponse),
+      );
+    });
+  });
 
   describe('Preloaded routes from json file', () => {
     describe('Config mocked routes', () => {
