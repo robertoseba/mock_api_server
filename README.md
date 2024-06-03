@@ -52,7 +52,7 @@ Example payload for the example route:
 You can setup custom responses from the endpoint by specifying special keys using this notation: `<key>`.
 In the example above, every POST request send to this endpoint will response with the `id` sent in the POST request body.
 
-If I send a POST request to `<server-url>/credit-card-processor/pay` with the body `{id:256}` then my mock endpoint will return a status code 201 with the following body `{"externalId": 256, "message": "Payment created successfully"}`
+If a POST request to `<server-url>/credit-card-processor/pay` with the body `{id:256}` is sent, then the endpoint will return a status code 201 with the following body `{"externalId": 256, "message": "Payment created successfully"}`
 
 ## Check your route configuration:
 
